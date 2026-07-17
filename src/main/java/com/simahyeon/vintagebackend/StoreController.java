@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -21,6 +23,13 @@ public class StoreController {
     @GetMapping("/api/stores")
     public List<Store> getAllStores() {
         return storeRepository.findAll();
+    }
+
+    @GetMapping("/api/stores/{id}")
+    public ResponseEntity<Store> getStoreById(@PathVariable Long id) {
+        return storeRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping("/api/stores")
