@@ -1,5 +1,6 @@
 package com.simahyeon.vintagebackend;
 
+import com.simahyeon.vintagebackend.exception.ResourceNotFoundException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,10 +27,9 @@ public class StoreController {
     }
 
     @GetMapping("/api/stores/{id}")
-    public ResponseEntity<Store> getStoreById(@PathVariable Long id) {
+    public Store getStoreById(@PathVariable Long id) {
         return storeRepository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(() -> new ResourceNotFoundException("매장을 찾을 수 없습니다: " + id));
     }
 
     @PostMapping("/api/stores")
