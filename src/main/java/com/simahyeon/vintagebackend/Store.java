@@ -41,7 +41,13 @@ public class Store {
     @Enumerated(EnumType.STRING)
     private StoreStatus status;
 
+    @Column(updatable = false)
     private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
 
     public enum PriceTier {
         LOW,    // 저가
